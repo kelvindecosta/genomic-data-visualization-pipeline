@@ -42,6 +42,29 @@ With the dataset in a folder ```data``` in the repository directory, run the fol
 python main.py --genedata=data/ALL.wgs.nhgri_coriell_affy_6.20140825.genotypes_has_ped.vcf --labels=data/affy_samples.20141118.panel --pops=data/20131219.populations.tsv --title="Testing PCA" --plot_limit_components=4
 ```
 
+After around 3 and a half minutes you will notice the project structure changes to :
+
+```
+.
+├── coords
+│   └── [1554590556343] Testing PCA - coords.txt
+├── logs
+│   └── [1554590556343] Testing PCA.log
+├── main.py
+├── plots
+│   └── [1554590556343] Testing PCA
+```
+
+The [`coords`](coords/) directory contains the lower dimensional coordinates written into text files.
+
+The [`logs`](logs/) directory contains the log reports.
+
+The [`plots`](plots/) directory has the plots of the components with one another.
+
+Here is one of the plots :
+
+<img src="plots/[1554590556343] Testing PCA/[1554590556343] Testing PCA - PC[1][2].png" alt="alt text" title="Testing PCA - PC[1][2]">
+
 ## TODO
 
 * Add support for umap
