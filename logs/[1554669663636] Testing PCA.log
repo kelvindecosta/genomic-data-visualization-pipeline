@@ -1,0 +1,50 @@
+[2019-04-08 00:41:03,637] : Log setup complete
+[2019-04-08 00:41:03,637] : Package Versions
+		scikit-allel : 1.2.0
+		matplotlib   : 3.0.3
+		numpy        : 1.16.2
+		pandas       : 0.24.2
+		seaborn      : 0.9.0
+[2019-04-08 00:41:03,637] : Parameters Passed
+		log_dir                  : ./logs/
+		plot_dir                 : ./plots/
+		coords_dir               : ./coords/
+		genedata                 : data/ALL.wgs.nhgri_coriell_affy_6.20140825.genotypes_has_ped.vcf
+		labels                   : data/affy_samples.20141118.panel
+		pops                     : data/20131219.populations.tsv
+		seed                     : 42
+		downsample_n             : 10000
+		prune_size               : 500
+		prune_step               : 200
+		prune_thresh             : 0.1
+		prune_iter               : 5
+		pca_n                    : 10
+		pca_scaler               : patterson
+		plot_limit_components    : 4
+		title                    : Testing PCA
+[2019-04-08 00:41:16,273] : Loaded Genotype Data from file data/ALL.wgs.nhgri_coriell_affy_6.20140825.genotypes_has_ped.vcf
+[2019-04-08 00:41:19,025] : Filtered Genotype Data
+[2019-04-08 00:41:23,532] : Applied downsampling to data
+[2019-04-08 00:42:00,712] : Pruning iteration 1 retaining  4773 removing 5227 variants
+[2019-04-08 00:42:37,557] : Pruning iteration 2 retaining  4743 removing 30 variants
+[2019-04-08 00:43:15,746] : Pruning iteration 3 retaining  4742 removing 1 variants
+[2019-04-08 00:43:53,535] : Pruning iteration 4 retaining  4742 removing 0 variants
+[2019-04-08 00:44:31,007] : Pruning iteration 5 retaining  4742 removing 0 variants
+[2019-04-08 00:44:31,039] : Applied pruning with paramaters, size : 500, step : 200, threshold : 0.1, n_iter : 5
+[2019-04-08 00:44:35,718] : Applied PCA with 10 components with scaler patterson and seed 42
+[2019-04-08 00:44:35,762] : Saved coordinates to ./coords/[1554669663636] Testing PCA - coords.txt
+[2019-04-08 00:44:35,815] : Loaded coordinates from ./coords/[1554669663636] Testing PCA - coords.txt
+[2019-04-08 00:44:35,831] : Constructed dictionary of population codes to population descriptions from data/20131219.populations.tsv
+[2019-04-08 00:44:35,831] : Loaded descriptions from data/20131219.populations.tsv
+[2019-04-08 00:44:37,282] : Constructed dictionary of samples to population codes from data/affy_samples.20141118.panel
+[2019-04-08 00:44:37,282] : Loaded samples mapping from data/affy_samples.20141118.panel
+[2019-04-08 00:44:37,282] : Plotting for 4 components
+[2019-04-08 00:44:37,444] : Saving plot of PC1 vs PC2
+[2019-04-08 00:44:38,095] : Saving plot of PC1 vs PC3
+[2019-04-08 00:44:38,647] : Saving plot of PC1 vs PC4
+[2019-04-08 00:44:39,246] : Saving plot of PC2 vs PC3
+[2019-04-08 00:44:39,792] : Saving plot of PC2 vs PC4
+[2019-04-08 00:44:40,363] : Saving plot of PC3 vs PC4
+[2019-04-08 00:44:40,843] : Elapsed Time
+		PCA       : 4714 ms
+		Total     : 217 s

@@ -151,14 +151,18 @@ def generate_plots(coords_file, labels_file, description_file, title, plotdir, l
     n = coords.shape[1]
     if limit and limit < n:
         n = limit
+    
 
     logging.info(f"Plotting for {n} components")
+    colors = len(populations_dict)
+    cm = plt.get_cmap('gist_rainbow')
     
     for i in range(n):
         for j in range(i, n):
             if i != j:
                 fig = plt.subplots(figsize=figsize)
                 ax = plt.subplot(111)
+                ax.set_prop_cycle(color=[cm(float(x/colors)) for x in range(colors)])
                 sns.despine(ax=ax, offset=5)
                 x = coords[:, i]
                 y = coords[:, j]
@@ -184,12 +188,15 @@ def get_args():
     parser.add_argument('--pops' , metavar='', help= 'population description file')
     parser.add_argument('--seed' , metavar='', help= 'seed for prng', default=42)
     parser.add_argument('--downsample_n' , metavar='', help= 'number of SNPs to randomly choose', default=10000)
+    
     parser.add_argument('--prune_size' , metavar='', help= 'size for pruning', default=500)
     parser.add_argument('--prune_step' , metavar='', help= 'step for pruning', default=200)
     parser.add_argument('--prune_thresh' , metavar='', help= 'threshold for pruning', default=0.1)
     parser.add_argument('--prune_iter' , metavar='', help= 'iterations for pruning', default=5)
+    
     parser.add_argument('--pca_n' , metavar='', help= 'number of principal components', default=10)
     parser.add_argument('--pca_scaler' , metavar='', help= 'scaler for pca', default='patterson')
+
     parser.add_argument('--plot_limit_components' , type=int ,metavar='', help= 'number of components to consider plotting, [None] means plot all', default=None)
 
 

@@ -47,12 +47,12 @@ After around 3 and a half minutes you will notice the project structure changes 
 ```
 .
 ├── coords
-│   └── [1554590556343] Testing PCA - coords.txt
+│   └── [1554669663636] Testing PCA - coords.txt
 ├── logs
-│   └── [1554590556343] Testing PCA.log
+│   └── [1554669663636] Testing PCA.log
 ├── main.py
 ├── plots
-│   └── [1554590556343] Testing PCA
+│   └── [1554669663636] Testing PCA
 ```
 
 The [`coords`](coords/) directory contains the lower dimensional coordinates written into text files.
@@ -63,7 +63,7 @@ The [`plots`](plots/) directory has the plots of the components with one another
 
 Here is one of the plots :
 
-<img src="plots/[1554590556343] Testing PCA/[1554590556343] Testing PCA - PC[1][2].png" alt="alt text" title="Testing PCA - PC[1][2]">
+<img src="plots/[1554669663636] Testing PCA/[1554669663636] Testing PCA - PC[1][2].png" alt="alt text" title="Testing PCA - PC[1][2]">
 
 ## TODO
 
