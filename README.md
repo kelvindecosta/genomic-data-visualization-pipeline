@@ -39,20 +39,35 @@ optional arguments:
 With the dataset in a folder ```data``` in the repository directory, run the following command :
 
 ```bash
-python main.py --genedata=data/ALL.wgs.nhgri_coriell_affy_6.20140825.genotypes_has_ped.vcf --labels=data/affy_samples.20141118.panel --pops=data/20131219.populations.tsv --title="Testing PCA" --plot_limit_components=4
+python main.py --genedata=data/ALL.wgs.nhgri_coriell_affy_6.20140825.genotypes_has_ped.vcf --labels=data/affy_samples.20141118.panel --pops=data/20131219.populations.tsv --title="Chromosome 1 Assembly B37" --plot_limit_components=4
 ```
 
-After around 3 and a half minutes you will notice the project structure changes to :
+After running command, the project structure changes to :
 
 ```
 .
 ├── coords
-│   └── [1554669663636] Testing PCA - coords.txt
+│   └── [1554763502304] Chromosome 1 Assembly B37
+│       ├── [1554763502304] Chromosome 1 Assembly B37 - [PCA] coords.txt
+│       ├── [1554763502304] Chromosome 1 Assembly B37 - [UMAP] coords.txt
+│       └── [1554763502304] Chromosome 1 Assembly B37 - [UMAP_PCA] coords.txt
 ├── logs
-│   └── [1554669663636] Testing PCA.log
+│   └── [1554763502304] Chromosome 1 Assembly B37.log
 ├── main.py
 ├── plots
-│   └── [1554669663636] Testing PCA
+│   └── [1554763502304] Chromosome 1 Assembly B37 plots
+│       ├── [1554763502304] Chromosome 1 Assembly B37 [PCA]
+│       │   ├── [1554763502304] Chromosome 1 Assembly B37 [PCA] - PC[1][2].png
+│       │   ├── [1554763502304] Chromosome 1 Assembly B37 [PCA] - PC[1][3].png
+│       │   ├── [1554763502304] Chromosome 1 Assembly B37 [PCA] - PC[1][4].png
+│       │   ├── [1554763502304] Chromosome 1 Assembly B37 [PCA] - PC[2][3].png
+│       │   ├── [1554763502304] Chromosome 1 Assembly B37 [PCA] - PC[2][4].png
+│       │   └── [1554763502304] Chromosome 1 Assembly B37 [PCA] - PC[3][4].png
+│       ├── [1554763502304] Chromosome 1 Assembly B37 [UMAP]
+│       │   └── [1554763502304] Chromosome 1 Assembly B37 [UMAP] - PC[1][2].png
+│       └── [1554763502304] Chromosome 1 Assembly B37 [UMAP_PCA]
+│           └── [1554763502304] Chromosome 1 Assembly B37 [UMAP_PCA] - PC[1][2].png
+└── README.md
 ```
 
 The [`coords`](coords/) directory contains the lower dimensional coordinates written into text files.
@@ -61,10 +76,14 @@ The [`logs`](logs/) directory contains the log reports.
 
 The [`plots`](plots/) directory has the plots of the components with one another.
 
-Here is one of the plots :
+### PCA
 
-<img src="plots/[1554669663636] Testing PCA/[1554669663636] Testing PCA - PC[1][2].png" alt="alt text" title="Testing PCA - PC[1][2]">
+<img src="plots/[1554763502304] Chromosome 1 Assembly B37 plots/[1554763502304] Chromosome 1 Assembly B37 [PCA]/[1554763502304] Chromosome 1 Assembly B37 [PCA] - PC[1][2].png" alt="alt text" title="Chromosome 1 Assembly B37 [PCA] - PC[1][2]">
 
-## TODO
+### UMAP
 
-* Add support for umap
+<img src="plots/[1554763502304] Chromosome 1 Assembly B37 plots/[1554763502304] Chromosome 1 Assembly B37 [UMAP]/[1554763502304] Chromosome 1 Assembly B37 [UMAP] - PC[1][2].png" alt="alt text" title="[1554763502304] Chromosome 1 Assembly B37 [UMAP] - PC[1][2]">
+
+### UMAP + PCA
+
+<img src="plots/[1554763502304] Chromosome 1 Assembly B37 plots/[1554763502304] Chromosome 1 Assembly B37 [UMAP_PCA]/[1554763502304] Chromosome 1 Assembly B37 [UMAP_PCA] - PC[1][2].png" alt="alt text" title="[1554763502304] Chromosome 1 Assembly B37 [UMAP_PCA] - PC[1][2]">

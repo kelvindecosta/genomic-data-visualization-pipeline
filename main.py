@@ -9,19 +9,23 @@ import random
 import seaborn as sns
 import sys
 import time
+import umap
 from os.path import join, exists
 from os import makedirs
 
 def package_version():
     """
-    Returns a string with the package names and versions
+    Returns a dictionary with the package names and versions
     """
-    v =  f"\t\tscikit-allel : {allel.__version__}\n"
-    v += f"\t\tmatplotlib   : {matplotlib.__version__}\n"
-    v += f"\t\tnumpy        : {np.__version__}\n"
-    v += f"\t\tpandas       : {pd.__version__}\n"
-    v += f"\t\tseaborn      : {sns.__version__}"
-    return v
+    packages = {}
+    packages['scikit-allel'] = allel.__version__
+    packages['matplotlib'] = matplotlib.__version__
+    packages['numpy'] = np.__version__
+    packages['pandas'] = pd.__version__
+    packages['seaborn'] = sns.__version__
+    packages['umap'] = umap.__version__
+
+    return packages
 
 def setup_log(filename):
     """
@@ -29,7 +33,7 @@ def setup_log(filename):
     """
     logging.StreamHandler(sys.stdout)
     logging.basicConfig(format='[%(asctime)s] : %(message)s', level=logging.INFO, filename=filename)
-    logging.info("Log setup complete")
+
 
 def population_descriptions(filename):
     """
@@ -130,23 +134,44 @@ def apply_pca(g, outfile, seed,  n, s):
     logging.info(f"Saved coordinates to {outfile}")
 
 
-def generate_plots(coords_file, labels_file, description_file, title, plotdir, limit, figsize=(10, 10)):
+def apply_umap(g, outfile):
+    """
+    Applies UMAP to data and saves low-dimensional coordinates in outfile
+    @Params: g: input data format
+             outfile: path to coordinate file
+    """
+    embedding = umap.UMAP(n_neighbors=5, min_dist=0.3, metric='correlation').fit_transform(g)
+    logging.info(f"Applied UMAP")
+    np.savetxt(outfile, embedding)
+    logging.info(f"Saved coordinates to {outfile}")
+
+
+def apply_umap_pca(pca_coords_file, outfile):
+    """
+    Applies UMAP to data from PCA reduced coordinates file and saves low-dimensional coordinates in outfile
+    @Params: pca_coords_file: input data coordinates file
+             outfile: path to coordinate file
+    """
+    coords = np.loadtxt(pca_coords_file)
+    embedding = umap.UMAP(n_neighbors=5, min_dist=0.3, metric='correlation').fit_transform(coords)
+    logging.info(f"Applied UMAP on PCA reduced space")
+    np.savetxt(outfile, embedding)
+    logging.info(f"Saved coordinates to {outfile}")
+
+
+def generate_plots(coords_file, samples_mapping, populations_dict, title, current_type_dir, limit, figsize=(10, 10)):
     """
     Generates plots for coordinates based on labels and descriptions
     @Params:    coords_file: path to file with low-dimensional coordinates
-                labels_file: path to labels
-                description_file: path to descriptions
+                samples_mapping: path to labels
+                populations_dict: path to descriptions
                 title: plot title
+                current_type_dir: directory to save plots
+                limit: number of components to plot
                 figsize: tuple describing plot size in inches
     """
     coords = np.loadtxt(coords_file)
     logging.info(f"Loaded coordinates from {coords_file}")
-
-    populations_dict = population_descriptions(description_file)
-    logging.info(f"Loaded descriptions from {description_file}")
-    
-    samples = np.array(list(samples_population_mapping(labels_file).values()))
-    logging.info(f"Loaded samples mapping from {labels_file}")
 
     n = coords.shape[1]
     if limit and limit < n:
@@ -167,7 +192,7 @@ def generate_plots(coords_file, labels_file, description_file, title, plotdir, l
                 x = coords[:, i]
                 y = coords[:, j]
                 for pop, label in populations_dict.items():
-                    filtr = (samples == pop)
+                    filtr = (samples_mapping == pop)
                     ax.plot(x[filtr], y[filtr], marker='o', linestyle=' ', label=label, markersize=6, mec='k', mew=.5)
                 ax.set_xlabel(f"PC{i+1}")
                 ax.set_ylabel(f"PC{j+1}")
@@ -175,7 +200,7 @@ def generate_plots(coords_file, labels_file, description_file, title, plotdir, l
                 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
                 plt.title(title)
                 logging.info(f"Saving plot of PC{i+1} vs PC{j+1}")
-                plt.savefig(join(plotdir, f"{pid} - PC[{i+1}][{j+1}].png"), bbox_inches = 'tight')
+                plt.savefig(join(current_type_dir, f"{title} - PC[{i+1}][{j+1}].png"), bbox_inches = 'tight')
                 plt.clf()
 
 def get_args():
@@ -223,13 +248,9 @@ if __name__ == "__main__":
     
     pid = f"[{int(start_time * 1000)}] {args.title}"
     logfile = join(args.log_dir, f"{pid}.log")
-    plotdir = join(args.plot_dir, pid)
-    coords_file = join(args.coords_dir, f"{pid} - coords.txt") 
-    if not exists(plotdir):
-        makedirs(plotdir)
 
     setup_log(logfile)
-    logging.info(f"Package Versions\n{package_version()}")
+    logging.info(f"Package Versions\n{dictstring(package_version(), 25)}")
     logging.info(f"Parameters Passed\n{dictstring(vars(args), 25)}")
     g = genotype_array_from_vcf(args.genedata)
     g = filter_genotype_array(g)
@@ -237,12 +258,50 @@ if __name__ == "__main__":
     g = downsample(g, args.downsample_n, args.seed)
     g = ld_prune(g, args.prune_size, args.prune_step, args.prune_thresh, args.prune_iter)
 
-    pca_start = time.time()
-    apply_pca(g, coords_file, args.seed, args.pca_n, args.pca_scaler)
-    pca_elapsed_ms = int((time.time() - pca_start) * 1000)
-    times = {'PCA' : f"{pca_elapsed_ms} ms"}
+    types = ["PCA", "UMAP", "UMAP_PCA"]
+    times = {}
 
-    generate_plots(coords_file, args.labels, args.pops, pid, plotdir, args.plot_limit_components)
+    coords_dir = join(args.coords_dir, f"{pid}")
+    if not exists(coords_dir):
+        makedirs(coords_dir) 
+    coords_files = [join(coords_dir, f"{pid} - [{x}] coords.txt") for x in types]
+
+    # PCA
+    s = time.time()
+    apply_pca(g, coords_files[0], args.seed, args.pca_n, args.pca_scaler)
+    e = int((time.time() - s) * 1000)
+    times[types[0]] = f"{e} ms"
+
+    # UMAP
+    s = time.time()
+    apply_umap(np.transpose(g), coords_files[1])
+    e = int((time.time() - s) * 1000)
+    times[types[1]] = f"{e} ms"
+
+    # UMAP + PCA
+    s = time.time()
+    apply_umap_pca(coords_files[0], coords_files[2])
+    e = int((time.time() - s) * 1000)
+    times[types[2]] = f"{e} ms"
+
+    # Preparing data to plot
+    # Loading population descriptions
+    populations_dict = population_descriptions(args.pops)
+    logging.info(f"Loaded descriptions from {args.pops}")
+
+    # Loading samples population
+    samples_mapping = np.array(list(samples_population_mapping(args.labels).values()))
+    logging.info(f"Loaded samples mapping from {args.labels}")
+    
+    plotdir = join(args.plot_dir, f"{pid} plots")
+    if not exists(plotdir):
+        makedirs(plotdir)
+    
+    for i in range(len(types)):
+        cdir = join(plotdir, f"{pid} [{types[i]}]")
+        if not exists(cdir):
+            makedirs(cdir)
+        generate_plots(coords_files[i], samples_mapping, populations_dict, f"{pid} [{types[i]}]", cdir,  args.plot_limit_components)
     elapsed_time = int(time.time() - start_time)
     times["Total"] = f"{elapsed_time} s"
 

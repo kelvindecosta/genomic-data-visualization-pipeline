@@ -1,0 +1,62 @@
+[2019-04-09 02:45:02,305] : Package Versions
+		scikit-allel             : 1.2.0
+		matplotlib               : 3.0.3
+		numpy                    : 1.16.2
+		pandas                   : 0.24.2
+		seaborn                  : 0.9.0
+		umap                     : 0.3.8
+[2019-04-09 02:45:02,305] : Parameters Passed
+		log_dir                  : ./logs/
+		plot_dir                 : ./plots/
+		coords_dir               : ./coords/
+		genedata                 : data/ALL.wgs.nhgri_coriell_affy_6.20140825.genotypes_has_ped.vcf
+		labels                   : data/affy_samples.20141118.panel
+		pops                     : data/20131219.populations.tsv
+		seed                     : 42
+		downsample_n             : 10000
+		prune_size               : 500
+		prune_step               : 200
+		prune_thresh             : 0.1
+		prune_iter               : 5
+		pca_n                    : 10
+		pca_scaler               : patterson
+		plot_limit_components    : 4
+		title                    : Chromosome 1 Assembly B37
+[2019-04-09 02:45:15,129] : Loaded Genotype Data from file data/ALL.wgs.nhgri_coriell_affy_6.20140825.genotypes_has_ped.vcf
+[2019-04-09 02:45:17,990] : Filtered Genotype Data
+[2019-04-09 02:45:22,641] : Applied downsampling to data
+[2019-04-09 02:46:01,137] : Pruning iteration 1 retaining  4773 removing 5227 variants
+[2019-04-09 02:46:38,372] : Pruning iteration 2 retaining  4743 removing 30 variants
+[2019-04-09 02:47:15,760] : Pruning iteration 3 retaining  4742 removing 1 variants
+[2019-04-09 02:47:53,206] : Pruning iteration 4 retaining  4742 removing 0 variants
+[2019-04-09 02:48:30,745] : Pruning iteration 5 retaining  4742 removing 0 variants
+[2019-04-09 02:48:30,775] : Applied pruning with paramaters, size : 500, step : 200, threshold : 0.1, n_iter : 5
+[2019-04-09 02:48:35,393] : Applied PCA with 10 components with scaler patterson and seed 42
+[2019-04-09 02:48:35,431] : Saved coordinates to ./coords/[1554763502304] Chromosome 1 Assembly B37/[1554763502304] Chromosome 1 Assembly B37 - [PCA] coords.txt
+[2019-04-09 02:49:03,434] : Applied UMAP
+[2019-04-09 02:49:03,446] : Saved coordinates to ./coords/[1554763502304] Chromosome 1 Assembly B37/[1554763502304] Chromosome 1 Assembly B37 - [UMAP] coords.txt
+[2019-04-09 02:49:08,744] : Applied UMAP on PCA reduced space
+[2019-04-09 02:49:08,755] : Saved coordinates to ./coords/[1554763502304] Chromosome 1 Assembly B37/[1554763502304] Chromosome 1 Assembly B37 - [UMAP_PCA] coords.txt
+[2019-04-09 02:49:08,771] : Constructed dictionary of population codes to population descriptions from data/20131219.populations.tsv
+[2019-04-09 02:49:08,771] : Loaded descriptions from data/20131219.populations.tsv
+[2019-04-09 02:49:10,108] : Constructed dictionary of samples to population codes from data/affy_samples.20141118.panel
+[2019-04-09 02:49:10,109] : Loaded samples mapping from data/affy_samples.20141118.panel
+[2019-04-09 02:49:10,153] : Loaded coordinates from ./coords/[1554763502304] Chromosome 1 Assembly B37/[1554763502304] Chromosome 1 Assembly B37 - [PCA] coords.txt
+[2019-04-09 02:49:10,153] : Plotting for 4 components
+[2019-04-09 02:49:10,363] : Saving plot of PC1 vs PC2
+[2019-04-09 02:49:10,976] : Saving plot of PC1 vs PC3
+[2019-04-09 02:49:11,523] : Saving plot of PC1 vs PC4
+[2019-04-09 02:49:12,076] : Saving plot of PC2 vs PC3
+[2019-04-09 02:49:12,641] : Saving plot of PC2 vs PC4
+[2019-04-09 02:49:13,257] : Saving plot of PC3 vs PC4
+[2019-04-09 02:49:13,817] : Loaded coordinates from ./coords/[1554763502304] Chromosome 1 Assembly B37/[1554763502304] Chromosome 1 Assembly B37 - [UMAP] coords.txt
+[2019-04-09 02:49:13,818] : Plotting for 2 components
+[2019-04-09 02:49:13,893] : Saving plot of PC1 vs PC2
+[2019-04-09 02:49:14,393] : Loaded coordinates from ./coords/[1554763502304] Chromosome 1 Assembly B37/[1554763502304] Chromosome 1 Assembly B37 - [UMAP_PCA] coords.txt
+[2019-04-09 02:49:14,394] : Plotting for 2 components
+[2019-04-09 02:49:14,464] : Saving plot of PC1 vs PC2
+[2019-04-09 02:49:14,981] : Elapsed Time
+		PCA       : 4645 ms
+		UMAP      : 28015 ms
+		UMAP_PCA  : 5309 ms
+		Total     : 252 s
